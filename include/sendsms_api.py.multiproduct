@@ -22,15 +22,15 @@ def send_sms(sms_to_list,sms_msg,db_type,application,host,port,level,alarm_item,
     payload = {'mobiles':sms_to_list_comma,'content':sms_msg} 
     ''' 
     '''问题出在sms_to_list，如果直接数据库中取，alarm表的数据就不会及时清掉， '''
-    '''sms_to_list = '15026792030,18602108965' '''
+    '''sms_to_list = '15026610801,15026610801' '''
      
     sms_to_list_paras=[]
     sms_to_list_ast = ast.literal_eval(sms_to_list)
     sms_to_list_paras = ['%s' % x for x in sms_to_list_ast]
     payload = {'mobiles[]':sms_to_list_paras,'content':'%s' % sms_msg}
-    '''payload = {'mobiles[]':['15026792030','18602108965'],'content':'%s' % sms_msg}'''
+    '''payload = {'mobiles[]':['15026610801','15026610801'],'content':'%s' % sms_msg}'''
     try:
-        r = requests.post('http://service-sms.d.pa.com/interface/send/costom.html',data=payload)
+        r = requests.post('http://xx-xx.d.xx.com/xx/xx/xx.html',data=payload)
         return True
     except Exception, e:
         print str(e)
