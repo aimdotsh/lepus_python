@@ -14,8 +14,9 @@ import sys
 
 
 
-def gettoken(corpid,corpsecret):
-
+def gettoken():
+    corpid = 'xx12c6a577e5bd64'
+    corpsecret = 'xx-11FYTa80rTW6CTwSS1ysoqLOAlcALzVzJkueefRJNuVke4cKqQuMzTd9bGa'
     gettoken_url = 'https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=' + corpid + '&corpsecret=' + corpsecret
 
     try:
@@ -42,8 +43,8 @@ def gettoken(corpid,corpsecret):
 
 
 
-def senddata(access_token,user,content):
-
+def senddata(user,content):
+    access_token = gettoken()
     send_url = 'https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=' + access_token
 
     send_values = {
@@ -78,15 +79,9 @@ def senddata(access_token,user,content):
 
 
 if __name__ == '__main__':
-
-    user = str(sys.argv[1])
-
-    content = str(sys.argv[2])
-
-    corpid = 'wxcd12c6a577e5bd64'
-    corpsecret = 'Utr3-11FYTa80rTW6CTwSS1ysoqLOAlcALzVzJkueefRJNuVke4cKqQuMzTd9bGa'
-
-    accesstoken = gettoken(corpid,corpsecret)
-    print "what happen"
-    print accesstoken
-    senddata(accesstoken,user,content)
+    #user = str(sys.argv[1])
+    #content = str(sys.argv[2])
+    user = "changjingxiu"
+    content = "test"
+    print "test"
+    senddata(user,content)
