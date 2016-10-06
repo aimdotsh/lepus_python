@@ -13,12 +13,12 @@ from email.header import Header
 #import functions as func
 
 
-mail_host = "mail.wondersgroup.com"
+mail_host = "mail.xx.com"
 mail_port = "25"
-mail_user = "fullway_b2b"
-mail_pass = "Wonders2009"
-mail_send_from = "fullway@wondersgroup.com"
-mailto="changjingxiu@wondersgroup.com"
+mail_user = "xx"
+mail_pass = "xx2009"
+mail_send_from = "fullway@xx.com"
+mailto="changjingxiu@xx.com"
 mailto_list=mailto.split(";")
 
 def send_mail(to_list,sub,content):
