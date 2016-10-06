@@ -27,7 +27,7 @@ def send_sms(sms_to_list,sms_msg,db_type,application,host,port,level,alarm_item,
         for i in arr:
             payload = {'mobiles':i,'content':sms_msg}
             try:
-                r = requests.post('http://service-sms.d.pa.com/interface/send/costom.html',data=payload)
+                r = requests.post('http://XX-XXX.com/XX/XX/XX.html',data=payload)
             except Exception, e:
                 print str(e)
         return True
