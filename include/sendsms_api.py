@@ -18,8 +18,8 @@ import sys
 
 
 def gettoken():
-    corpid = 'xxx'
-    corpsecret = 'xx-xxxx'
+    corpid = 'xx'
+    corpsecret = 'xx-xx'
     gettoken_url = 'https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=' + corpid + '&corpsecret=' + corpsecret
 
     try:

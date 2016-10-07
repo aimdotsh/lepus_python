@@ -76,7 +76,8 @@ def main():
 
         time.sleep(3)
         if monitor_sqlserver=="1":
-            job = Process(target = job_run, args = ('check_sqlserver',frequency_monitor))
+            #job = Process(target = job_run, args = ('check_sqlserver',frequency_monitor))
+            job = Process(target = job_run, args = ('check_sqlserver',10))
             joblist.append(job)
             job.start()
 
