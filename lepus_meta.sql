@@ -2362,6 +2362,10 @@ CREATE TABLE `sqlserver_status_history` (
   `ymdhi` bigint(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=203650 DEFAULT CHARSET=utf8;
+
+ALTER table redis_status_history add index idx_server_ymdhi (server_id,ymdhi)
+
+ALTER table redis_status_history drop index idx_server_id;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
