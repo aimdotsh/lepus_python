@@ -11,7 +11,9 @@
 
 --adding alert for redis memory use
 
---adding sqlserver part from lepus 3.9
+--adding sqlserver part from lepus 3.8
+
+--fix memory display in os monitor mode
 
 --python part can run in proxy mode for monitoring mysql 
 
