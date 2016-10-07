@@ -14,3 +14,5 @@
 --adding sqlserver part from lepus 3.9
 
 --python part can run in proxy mode for monitoring mysql 
+
+--adding weixin alert method
