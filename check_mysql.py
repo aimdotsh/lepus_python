@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 #coding:utf-8
+from elasticsearch import Elasticsearch
 import os
 import uuid
 import sys
@@ -69,6 +70,7 @@ def check_mysql(host,port,username,password,server_id,tags,replchannel):
         innodb_pages_written = int(func.get_item(mysql_status,'Innodb_pages_written'))
         innodb_row_lock_current_waits = int(func.get_item(mysql_status,'Innodb_row_lock_current_waits'))
         #innodb persecond info
+        innodb_log_waits_persecond = int(func.get_item(mysql_status_2,'Innodb_log_waits')) - int(func.get_item(mysql_status,'Innodb_log_waits')) 
         innodb_buffer_pool_read_requests_persecond = int(func.get_item(mysql_status_2,'Innodb_buffer_pool_read_requests')) - int(func.get_item(mysql_status,'Innodb_buffer_pool_read_requests'))
         innodb_buffer_pool_reads_persecond = int(func.get_item(mysql_status_2,'Innodb_buffer_pool_reads')) - int(func.get_item(mysql_status,'Innodb_buffer_pool_reads'))
         innodb_buffer_pool_write_requests_persecond = int(func.get_item(mysql_status_2,'Innodb_buffer_pool_write_requests')) - int(func.get_item(mysql_status,'Innodb_buffer_pool_write_requests'))
@@ -185,12 +187,11 @@ def check_mysql(host,port,username,password,server_id,tags,replchannel):
         #print param
         func.mysql_exec(sql,param)
         func.update_db_status_init(role_new,version,host,port,tags)
-
+                
         #check mysql process
-        processlist=cur.execute("select * from information_schema.processlist where DB not in ('information_schema','sys') and command !='Sleep';")
+        processlist=cur.execute("select * from information_schema.processlist where DB not in ('information_schema','sys') and user<>'system user' and command !='Sleep';")
         if processlist:
             for line in cur.fetchall():
-                #print uuid_tag
                 sql="insert into mysql_processlist(server_id,host,port,tags,pid,p_user,p_host,p_db,command,time,status,info,uuid) values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
                 param=(server_id,host,port,tags,line[0],line[1],line[2],line[3],line[4],line[5],line[6],line[7],uuid_tag)
                 func.mysql_exec(sql,param)
@@ -252,7 +253,6 @@ def check_mysql(host,port,username,password,server_id,tags,replchannel):
             try:  
                 slave_sQL_sunning_state=result[44]
             except Exception,e:  
-                print Exception,":",e
                 slave_sQL_sunning_state="NULL"
             datalist.append(master_server)
             datalist.append(master_port)
@@ -302,6 +302,17 @@ def check_mysql(host,port,username,password,server_id,tags,replchannel):
             sql="replace into mysql_replication(server_id,tags,host,port,is_master,is_slave,gtid_mode,read_only,master_server,master_port,slave_io_run,slave_sql_run,delay,current_binlog_file,current_binlog_pos,master_binlog_file,master_binlog_pos,master_binlog_space,Slave_SQL_Running_State) values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)"
             param=(server_id,tags,host,port,result[0],result[1],result[2],result[3],result[4],result[5],result[6],result[7],result[8],result[9],result[10],result[11],result[12],result[13],result[14])
             func.mysql_exec(sql,param)
+            try:
+                es = Elasticsearch([{'host': '10.1.70.220', 'port': 9200}])
+                es.index(index="logstash-lepus-mysql"+datetime.datetime.now().strftime("%Y-%m"), doc_type="lepus-status",body={"@host":host,"@port":port,"@tags":host+":"+port,"uptime":int(uptime),"version":version,"role":role,"innodb_buffer_pool_size":int(innodb_buffer_pool_size),"threads_connected":int(threads_connected),"threads_running":int(threads_running),"threads_cached":int(threads_cached),"aborted_clients":int(aborted_clients),"aborted_connects":int(aborted_connects),"connections_persecond":int(connections_persecond),"innodb_buffer_pool_read_requests_persecond":int(innodb_buffer_pool_read_requests_persecond),"innodb_buffer_pool_reads_persecond":int(innodb_buffer_pool_reads_persecond),"innodb_buffer_pool_write_requests_persecond":int(innodb_buffer_pool_write_requests_persecond),"innodb_rows_read_persecond":int(innodb_rows_read_persecond),"innodb_rows_inserted_persecond":int(innodb_rows_inserted_persecond),"innodb_rows_updated_persecond":int(innodb_rows_updated_persecond),"innodb_rows_deleted_persecond":int(innodb_rows_deleted_persecond),"innodb_row_lock_current_waits":int(innodb_row_lock_current_waits),"innodb_log_waits_persecond":int(innodb_log_waits_persecond),"bytes_received_persecond":int(bytes_received_persecond),"bytes_sent_persecond":int(bytes_sent_persecond),"com_select_persecond":int(com_select_persecond),"com_insert_persecond":int(com_insert_persecond),"com_update_persecond":int(com_update_persecond),"com_delete_persecond":int(com_delete_persecond),"com_commit_persecond":int(com_commit_persecond),"com_rollback_persecond":int(com_rollback_persecond),"questions_persecond":int(questions_persecond),"queries_persecond":int(queries_persecond),"transaction_persecond":int(transaction_persecond),"delay":int(-1 if (result[8]=='---' or not result[8]) else result[8]),"@timestamp": datetime.datetime.now()-datetime.timedelta(hours=8)})
+            except Exception,e:
+                print Exception,":",e
+        else :
+            try:
+                es = Elasticsearch([{'host': '10.1.70.220', 'port': 9200}])
+                es.index(index="logstash-lepus-mysql"+datetime.datetime.now().strftime("%Y-%m"), doc_type="lepus-status",body={"@host":host,"@port":port,"@tags":host+":"+port,"uptime":int(uptime),"version":version,"role":role,"innodb_buffer_pool_size":int(innodb_buffer_pool_size),"threads_connected":int(threads_connected),"threads_running":int(threads_running),"threads_cached":int(threads_cached),"aborted_clients":int(aborted_clients),"aborted_connects":int(aborted_connects),"connections_persecond":int(connections_persecond),"innodb_buffer_pool_read_requests_persecond":int(innodb_buffer_pool_read_requests_persecond),"innodb_buffer_pool_reads_persecond":int(innodb_buffer_pool_reads_persecond),"innodb_buffer_pool_write_requests_persecond":int(innodb_buffer_pool_write_requests_persecond),"innodb_rows_read_persecond":int(innodb_rows_read_persecond),"innodb_rows_inserted_persecond":int(innodb_rows_inserted_persecond),"innodb_rows_updated_persecond":int(innodb_rows_updated_persecond),"innodb_rows_deleted_persecond":int(innodb_rows_deleted_persecond),"innodb_row_lock_current_waits":int(innodb_row_lock_current_waits),"innodb_log_waits_persecond":int(innodb_log_waits_persecond),"bytes_received_persecond":int(bytes_received_persecond),"bytes_sent_persecond":int(bytes_sent_persecond),"com_select_persecond":int(com_select_persecond),"com_insert_persecond":int(com_insert_persecond),"com_update_persecond":int(com_update_persecond),"com_delete_persecond":int(com_delete_persecond),"com_commit_persecond":int(com_commit_persecond),"com_rollback_persecond":int(com_rollback_persecond),"questions_persecond":int(questions_persecond),"queries_persecond":int(queries_persecond),"transaction_persecond":int(transaction_persecond),"@timestamp": datetime.datetime.now()-datetime.timedelta(hours=8)})
+            except Exception,e:
+                print Exception,":",e
         cur.close()
         exit
 

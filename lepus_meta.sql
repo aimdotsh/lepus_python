@@ -29,7 +29,7 @@ CREATE TABLE `admin_log` (
   `client_ip` varchar(100) DEFAULT NULL,
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1457 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1477 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -68,7 +68,7 @@ CREATE TABLE `admin_privilege` (
   `action` varchar(100) DEFAULT NULL,
   `display_order` smallint(4) NOT NULL DEFAULT '0',
   PRIMARY KEY (`privilege_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=131 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=132 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -160,7 +160,7 @@ CREATE TABLE `alarm` (
   `send_sms` tinyint(2) DEFAULT NULL,
   `send_sms_to_list` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=305 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -193,7 +193,7 @@ CREATE TABLE `alarm_history` (
   KEY `idx_host` (`host`),
   KEY `idx_alarm_type` (`alarm_item`),
   KEY `idx_level` (`level`)
-) ENGINE=InnoDB AUTO_INCREMENT=303824 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=304150 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -212,7 +212,7 @@ CREATE TABLE `alarm_temp` (
   `alarm_type` varchar(30) DEFAULT NULL,
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=332028 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=332293 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -349,7 +349,7 @@ CREATE TABLE `db_servers_mysql` (
   `repl_channel` varchar(50) DEFAULT '0' COMMENT '0表示默认复制格式 配成5.7的channel名 支持5.7多主复制',
   PRIMARY KEY (`id`),
   KEY `idx_host` (`host`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=306 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=315 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -446,15 +446,15 @@ DROP TABLE IF EXISTS `db_servers_redis`;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `db_servers_redis` (
   `id` int(10) NOT NULL AUTO_INCREMENT,
-  `host` varchar(30) COLLATE utf8_unicode_ci NOT NULL,
-  `port` varchar(10) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `tags` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `host` varchar(30) NOT NULL,
+  `port` varchar(10) NOT NULL,
+  `password` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
+  `tags` varchar(50) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `monitor` tinyint(2) DEFAULT '1',
   `send_mail` tinyint(2) DEFAULT '1',
-  `send_mail_to_list` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `send_mail_to_list` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `send_sms` tinyint(2) DEFAULT '0',
-  `send_sms_to_list` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `send_sms_to_list` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `alarm_connected_clients` tinyint(2) NOT NULL DEFAULT '1',
   `alarm_command_processed` tinyint(2) NOT NULL DEFAULT '1',
   `alarm_blocked_clients` tinyint(2) NOT NULL DEFAULT '1',
@@ -472,7 +472,7 @@ CREATE TABLE `db_servers_redis` (
   `threshold_critical_used_memory` bigint(20) unsigned NOT NULL DEFAULT '10000' COMMENT '单位MB',
   PRIMARY KEY (`id`),
   KEY `idx_host` (`host`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -558,7 +558,7 @@ CREATE TABLE `db_status` (
   `disk_tips` varchar(500) NOT NULL DEFAULT 'no_data',
   `uptime_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=413 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=426 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -618,7 +618,7 @@ CREATE TABLE `memcache_status` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uni_server_id` (`server_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22432 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=50894 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -629,7 +629,7 @@ DROP TABLE IF EXISTS `memcache_status_history`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `memcache_status_history` (
-  `id` int(10) NOT NULL DEFAULT '0',
+  `id` int(10) NOT NULL AUTO_INCREMENT,
   `server_id` smallint(4) NOT NULL DEFAULT '-1',
   `host` varchar(50) NOT NULL,
   `port` int(10) NOT NULL,
@@ -663,8 +663,10 @@ CREATE TABLE `memcache_status_history` (
   `opcounters_set_persecond` int(10) NOT NULL DEFAULT '-1',
   `opcounters_get_rate` smallint(4) NOT NULL DEFAULT '-1',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  `ymdhi` bigint(20) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `ymdhi` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `idx_server_ymdhi` (`server_id`,`ymdhi`)
+) ENGINE=InnoDB AUTO_INCREMENT=50893 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -679,7 +681,7 @@ CREATE TABLE `mongodb_current_op` (
   `host` varchar(30) DEFAULT NULL,
   `port` varchar(10) DEFAULT NULL,
   `Op_desc` varchar(256) DEFAULT NULL,
-  `Secs_running` int(10) unsigned DEFAULT '0',
+  `Secs_running` bigint(10) DEFAULT '0',
   `Op` varchar(256) DEFAULT NULL,
   `Ns` varchar(256) DEFAULT NULL,
   `Op_query` varchar(1000) DEFAULT NULL,
@@ -692,7 +694,7 @@ CREATE TABLE `mongodb_current_op` (
   `uuid` varchar(100) DEFAULT NULL,
   `CreateTime` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=33531 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=144289 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -707,7 +709,7 @@ CREATE TABLE `mongodb_current_op_his` (
   `host` varchar(30) DEFAULT NULL,
   `port` varchar(10) DEFAULT NULL,
   `Op_desc` varchar(256) DEFAULT NULL,
-  `Secs_running` int(10) unsigned DEFAULT '0',
+  `Secs_running` bigint(10) DEFAULT '0',
   `Op` varchar(256) DEFAULT NULL,
   `Ns` varchar(256) DEFAULT NULL,
   `Op_query` varchar(1000) DEFAULT NULL,
@@ -720,7 +722,7 @@ CREATE TABLE `mongodb_current_op_his` (
   `uuid` varchar(100) DEFAULT NULL,
   `CreateTime` datetime DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`Id`)
-) ENGINE=InnoDB AUTO_INCREMENT=76839 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=216914 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -781,7 +783,7 @@ CREATE TABLE `mongodb_status` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `idx_server_id` (`server_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3082082 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=38469 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -844,7 +846,7 @@ CREATE TABLE `mongodb_status_history` (
   PRIMARY KEY (`id`),
   KEY `idx_serverid_ymdhi` (`server_id`,`YmdHi`) USING BTREE,
   KEY `idx_ymdhi` (`YmdHi`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=3082080 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3100132 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -868,7 +870,7 @@ CREATE TABLE `mysql_bigtable` (
   PRIMARY KEY (`id`),
   KEY `idx_server_id` (`server_id`) USING BTREE,
   KEY `idx_table_size` (`table_size`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=256 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=386 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -893,7 +895,7 @@ CREATE TABLE `mysql_bigtable_history` (
   PRIMARY KEY (`id`),
   KEY `idx_create_time` (`create_time`) USING BTREE,
   KEY `idx_server_id_tablename_ymd` (`server_id`,`table_name`,`Ymd`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=235 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=373 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -915,7 +917,7 @@ CREATE TABLE `mysql_connected` (
   `connect_count` int(10) NOT NULL DEFAULT '0',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=80485404 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=82620198 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -945,7 +947,7 @@ CREATE TABLE `mysql_processlist` (
   KEY `idx_create_time` (`create_time`) USING BTREE,
   KEY `idx_server_id` (`server_id`) USING BTREE,
   KEY `idx_application_id` (`tags`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=32580 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=136270 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1004,7 +1006,7 @@ CREATE TABLE `mysql_processlist_history` (
   KEY `idx_create_time` (`create_time`) USING BTREE,
   KEY `idx_server_id` (`server_id`) USING BTREE,
   KEY `idx_application_id` (`tags`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=49644 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED;
+) ENGINE=InnoDB AUTO_INCREMENT=189999 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1038,7 +1040,7 @@ CREATE TABLE `mysql_replication` (
   `create_time` timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uni_ser_id` (`server_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=26793140 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=27429981 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1076,7 +1078,7 @@ CREATE TABLE `mysql_replication_history` (
   KEY `idx_union_1` (`server_id`,`YmdHi`) USING BTREE,
   KEY `idx_ymdhi` (`YmdHi`) USING BTREE,
   KEY `idx_create_time` (`create_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=26793132 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED;
+) ENGINE=InnoDB AUTO_INCREMENT=27429967 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1393,7 +1395,7 @@ CREATE TABLE `mysql_status` (
   `uptime` int(11) NOT NULL DEFAULT '-1',
   `version` varchar(50) NOT NULL DEFAULT '-1',
   `max_connections` smallint(4) NOT NULL DEFAULT '-1',
-  `max_connect_errors` int(10) NOT NULL DEFAULT '-1',
+  `max_connect_errors` bigint(10) NOT NULL DEFAULT '-1',
   `open_files_limit` int(10) NOT NULL DEFAULT '-1',
   `open_files` smallint(4) NOT NULL DEFAULT '-1',
   `table_open_cache` smallint(4) NOT NULL DEFAULT '-1',
@@ -1481,7 +1483,7 @@ CREATE TABLE `mysql_status` (
   KEY `idx_connections` (`threads_connected`) USING BTREE,
   KEY `idx_active` (`threads_running`) USING BTREE,
   KEY `idx_server_id` (`server_id`) USING BTREE
-) ENGINE=InnoDB AUTO_INCREMENT=33322157 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=34239162 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -1502,7 +1504,7 @@ CREATE TABLE `mysql_status_history` (
   `uptime` int(11) NOT NULL DEFAULT '-1',
   `version` varchar(50) NOT NULL DEFAULT '-1',
   `max_connections` smallint(4) NOT NULL DEFAULT '-1',
-  `max_connect_errors` int(10) NOT NULL DEFAULT '-1',
+  `max_connect_errors` bigint(10) NOT NULL DEFAULT '-1',
   `open_files_limit` int(10) NOT NULL DEFAULT '-1',
   `open_files` smallint(4) NOT NULL DEFAULT '-1',
   `table_open_cache` smallint(4) NOT NULL DEFAULT '-1',
@@ -1593,7 +1595,7 @@ CREATE TABLE `mysql_status_history` (
   KEY `idx_application_id` (`tags`) USING BTREE,
   KEY `idx_create_time` (`create_time`) USING BTREE,
   KEY `idx_yhdmi` (`YmdHi`)
-) ENGINE=InnoDB AUTO_INCREMENT=33322146 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=34239143 DEFAULT CHARSET=utf8 ROW_FORMAT=COMPRESSED;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2107,7 +2109,7 @@ CREATE TABLE `redis_replication` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uni_server_id` (`server_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5791546 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6072812 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2140,7 +2142,7 @@ CREATE TABLE `redis_replication_history` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `ymdhi` bigint(18) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5790799 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6072802 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2217,7 +2219,7 @@ CREATE TABLE `redis_status` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `uni_server_id` (`server_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5652344 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5933611 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2294,9 +2296,9 @@ CREATE TABLE `redis_status_history` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `ymdhi` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `idx_server_id` (`server_id`) USING BTREE,
-  KEY `IDX_HOST_TIME` (`host`,`create_time`)
-) ENGINE=InnoDB AUTO_INCREMENT=5651597 DEFAULT CHARSET=utf8;
+  KEY `IDX_HOST_TIME` (`host`,`create_time`),
+  KEY `idx_server_ymdhi` (`server_id`,`ymdhi`)
+) ENGINE=InnoDB AUTO_INCREMENT=5933601 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2328,7 +2330,7 @@ CREATE TABLE `sqlserver_status` (
   `packet_errors_persecond` int(11) NOT NULL DEFAULT '-1',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=203650 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -2361,11 +2363,7 @@ CREATE TABLE `sqlserver_status_history` (
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `ymdhi` bigint(10) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=203650 DEFAULT CHARSET=utf8;
-
-ALTER table redis_status_history add index idx_server_ymdhi (server_id,ymdhi)
-
-ALTER table redis_status_history drop index idx_server_id;
+) ENGINE=InnoDB AUTO_INCREMENT=203651 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -2377,4 +2375,4 @@ ALTER table redis_status_history drop index idx_server_id;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2016-09-27 15:05:46
+-- Dump completed on 2016-10-20 17:31:06
