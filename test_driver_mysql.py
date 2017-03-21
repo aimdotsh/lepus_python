@@ -58,7 +58,7 @@ def analyze_mysql_processlist(cur_dbmon):
         if table_body:
             mail_text += table_head + table_body + "</table>"
         #print mail_text
-        result = sendmail.send_mail("changjingxiu@wondersgroup.com","mail_subject",mail_text)
+        result = sendmail.send_mail("xx@xx.xx","mail_subject",mail_text)
     except Exception,e:
         print e
         print "analyze mysql processlist got error"
