@@ -62,7 +62,7 @@ def analyze_mongodb_currentop(cur_dbmon):
         
         if table_body:
             mail_text += table_head + table_body + "</table>"
-        result = sendmail.send_mail("changjingxiu@wondersgroup.com","mail_subject",mail_text)
+        result = sendmail.send_mail("xxx@xx.com","mail_subject",mail_text)
     except Exception,e:
         print "analyze_mongodb_currentop got error:%s" %e
 
